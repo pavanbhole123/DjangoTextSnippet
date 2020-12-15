@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sharable Text | {% block title %} {% endblock %}</title>
+    <style type=text/css> 
+        span{
+            padding: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div align = 'right'>
+        {% if user.is_authenticated %}
+                <span><a href=".">Hi! {{user.first_name}}</a></span>
+                <span><a href="/textsharing/logout/">Logout</a></span>
+                <span><a href="/textsharing/create_sharable_text/">Create Shared Text</a></span>
+            {% else %}
+                <span><a href="/textsharing/login/">Login</a></span>
+                <span><a href="/textsharing/register/">Register</a></span>
+            {% endif %}
+    </div>
+    {% block content %} 
+    
+    
+    {% endblock %}
+</body>
+</html>
