@@ -1,0 +1,216 @@
+﻿2.1]search movie details of those movies who are released in USA and has imdb rating more tha 7.5
+
+
+GET movies/_search
+{
+  "query": {
+    "bool": {
+      "filter": [ 
+        { "term":  { "country.keyword": "USA" }},
+        { "range": { "movie.imdb.score": { "gte": 7.5 }}}
+      ]
+    }
+  }
+}
+
+
+2.2]Actors who has done geners like Action with sci-fi between 2010 to 2015
+GET movies/_search
+{
+  "query": {
+    "bool": {
+     "must": [
+        { "match": { "genres.keyword":   "Action"        }},
+        { "match": { "genres.keyword": "Sci-Fi" }}
+      ],
+      "filter": {
+        "range": {
+          "movie.year": {
+            "gt": 2010,
+            "lt": 2015
+          }
+        }
+      }
+      
+    }
+  },
+  "aggs": {
+    "NAME": {
+      "nested": {
+        "path": "actors"
+      }
+      , "aggs": {
+        "NAME": {
+          "terms": {
+            "field": "actors.name.keyword",
+            "size": 1000
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+
+2.3]movie names for Highest number of reviews 
+
+GET movies/_search
+{"size": 0, 
+  "aggs": {
+    "movie": {
+      "terms": {
+        "field": "movie.name.keyword",
+        "order": { "review_stats": "desc" }
+        , "size": 1
+      },
+      "aggs": {
+        "review_stats": { "max": { "field": "num.user_for_review" } }
+      }
+    }
+  }
+}
+
+
+
+2.4] Actors who worked with Daryl Sabara
+
+
+GET movies/_search
+{
+  "query": {
+    "nested": {
+      "path": "actors",
+      "query": {
+        "bool": {
+          "must": [
+            { "match": { "actors.name.keyword": "Daryl Sabara" } }
+          ]
+        }
+      }
+    }
+  },"aggs": {
+    "NAME": {
+      "nested": {
+        "path": "actors"
+      }, "aggs": {
+        "NAME": {
+          "terms": {
+            "field": "actors.name.keyword",
+            "size": 1000
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+
+2.5.1]2.5.1 movie with tags #hopital #zombie
+
+GET movies/_search
+{
+  "size": 0, 
+  "query": {
+    "terms": {
+      "plot_keywords.keyword": [
+        "hospital",
+        "zombie"
+      ]
+    }
+  },"aggs": {
+    "NAME": {
+      "terms": {
+        "field": "movie.name.keyword",
+        "size": 1000
+      }
+    }
+  }
+ 
+}
+
+
+2.5.2] #battle #inreltionship
+
+GET movies/_search
+{
+  "size": 0, 
+  "query": {
+    "terms": {
+      "plot_keywords.keyword": [
+        "battle",
+        "inreltionship"
+      ]
+    }
+  },"aggs": {
+    "NAME": {
+      "terms": {
+        "field": "movie.name.keyword",
+        "size": 1000
+      }
+    }
+  }
+  
+
+
+sample data of index movie:    
+{
+          "country" : "UK",
+          "color" : "Color",
+          "duration" : 148,
+          "num" : {
+            "user_for_review" : 994,
+            "voted_users" : 275868,
+            "critic_for_reviews" : 602
+          },
+          "plot_keywords" : [
+            "bomb",
+            "espionage",
+            "sequel",
+            "spy",
+            "terrorist"
+          ],
+          "genres" : [
+            "Action",
+            "Adventure",
+            "Thriller"
+          ],
+          "facenumber_in_poster" : 1,
+          "movie" : {
+            "year" : 2015,
+            "name" : "Spectre ",
+            "imdb" : {
+              "link" : "http://www.imdb.com/title/tt2379713/?ref_=fn_tt_tt_1",
+              "score" : 6.8
+            },
+            "facebook_like" : 85000
+          },
+          "gross" : 200074175,
+          "language" : "English",
+          "budget" : 245000000,
+          "director" : {
+            "facebook_likes" : 0,
+            "name" : "Sam Mendes"
+          },
+          "actors" : [
+            {
+              "facebook_likes" : 11000,
+              "name" : "Christoph Waltz"
+            },
+            {
+              "facebook_likes" : null,
+              "name" : "Rory Kinnear"
+            },
+            {
+              "facebook_likes" : 161,
+              "name" : "Stephanie Sigman"
+            }
+          ],
+          "cast_total_facebook_likes" : 11700,
+          "aspect_ratio" : 2
+        }
