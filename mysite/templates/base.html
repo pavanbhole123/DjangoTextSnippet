@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sharable Text | {% block title %} {% endblock %}</title>
+    <style type=text/css> 
+        span{
+            padding: 15px;
+        }
+
+        .cookie-banner {
+            position: fixed;
+            bottom: 40px;
+            left: 10%;
+            right: 10%;
+            width: 80%;
+            padding: 5px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #eee;
+            border-radius: 5px;
+            box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+        }
+
+        .close {
+            height: 20px;
+            background-color: #777;
+            border: none;
+            color: white;
+            border-radius: 2px;
+            cursor: pointer;
+            }
+
+    </style>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+</head>
+
+<body>
+    <div align = 'right'>
+        {% if user.is_authenticated %}
+                <span><a href=".">Hi! {{user.first_name}}</a></span>
+                <span><a href="/meme/logout/">Logout</a></span>
+                <!-- <span><a href="/meme/create_sharable_text/">Create Shared Text</a></span> -->
+            {% else %}
+                <span><a href="/meme/login/">Login</a></span>
+                <span><a href="/meme/register/">Register</a></span>
+            {% endif %}
+    </div>
+    {% block content %} 
+    
+    
+    {% endblock %}
+</body>
+</html>

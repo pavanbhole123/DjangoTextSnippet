@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <h1>Hello {{name}}... Enjoy the memes</h1>
+    {% for i in data|slice:":5"%} 
+    <div class="row"> 
+        <img src="{{i.url}}" alt="{{i.name}}" width="{{i.width}}" height="{{i.height}}">
+    </div> 
+    <br/>
+    {% endfor %}
+{% endblock %}

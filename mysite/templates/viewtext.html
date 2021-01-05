@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Sharable Text | Create New{% endblock %}
+
+{% block content %}
+
+{% if renderForm %}
+<form action="{{page}}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit">
+</form>
+{% else %}
+    <h3>Shared Text </h3><br>
+    <div style="border: 1px solid black;padding: 5px;">
+        {{data}}
+    </div>
+{% endif %}
+{% endblock %}

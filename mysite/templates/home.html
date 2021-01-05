@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <h1>Hello {{name}}... Whats Up!!</h1>
+
+
+
+    <div class='cookie-banner'>
+        <p>
+            Our website collects cookies, and by clicking accept you allow us to save and collect cookies [{{SID}}] 
+            <a href='/meme/acceptCookies'>Accept</a>
+        </p>
+        <button class="close">&times;</button>
+    </div>
+
+
+    <script>
+
+
+
+    let timerId = setTimeout( function(){
+        $('.cookie-banner').fadeOut();
+        window.location = "/meme/cookieReject/";
+    }, 5 * 60 * 1000);
+    
+    $('.close').click(function() {
+        $('.cookie-banner').fadeOut();
+
+        window.location = "/meme/cookieReject/";
+    })
+
+
+
+    </script>
+{% endblock %}
